@@ -81,18 +81,17 @@ router.delete('/api/posts/:id', async (req, res) => {
 
 // UPDATE REQUEST
 router.put('/api/posts/:id', async (req, res) => {
-    const postId = req.params.id;
-    const post = req.body;
-    const updatePost = await Dbase.update(postId, post)
+    const updatePost = await Dbase.update(req.params.id, req.body)
 
     try {
-        if (!postId) {
-            res.status(404).json({
-                message: 'The post with the specified ID does not exist.'
-            }).end()
-        } else if (!post.id || !post.title) {
+        console.log(updatePost)
+        if (!req.body.contents || !req.body.title) {
             res.status(400).json({
                 errorMessage: 'Please provide title and contents for the post.'
+            }).end()
+        } else if (!req.params.id) {
+            res.status(404).json({
+                message: 'The post with the specified ID does not exist.'
             }).end()
         } else {
             res.status(200).json(updatePost)
