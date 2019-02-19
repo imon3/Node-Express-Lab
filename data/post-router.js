@@ -40,15 +40,16 @@ router.get('/api/posts/:id', async (req, res) => {
 
 // CREATE CRUD REQUEST
 router.post('/api/posts', async (req, res) => {
-    const post = await Dbase.insert(req.body);
 
+    console.log(req.body)
     try {
-        if (!post.title || !post.contents) {
+        const post = await Dbase.insert(req.body);
+        if (req.body.title && req.body.contents) {
+            res.status(201).json(post)
+        } else {
             res.status(400).json({
                 errorMessage: 'Please provide title and contents for the post.'
             }).end()
-        } else {
-            res.status(201).json(post)
         }
     } catch (error) {
         res.status(500).json({
@@ -65,7 +66,7 @@ router.delete('/api/posts/:id', async (req, res) => {
         if (!post) {
             res.status(404).json({
                 message: 'The post with the specified ID does not exist.'
-            })
+            }).end()
         } else {
             res.status(200).json({
                 message: 'The post was deleted'
@@ -74,6 +75,31 @@ router.delete('/api/posts/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({
             error: 'The post could not be removed.'
+        })
+    }
+})
+
+// UPDATE REQUEST
+router.put('/api/posts/:id', async (req, res) => {
+    const postId = req.params.id;
+    const post = req.body;
+    const updatePost = await Dbase.update(postId, post)
+
+    try {
+        if (!postId) {
+            res.status(404).json({
+                message: 'The post with the specified ID does not exist.'
+            }).end()
+        } else if (!post.id || !post.title) {
+            res.status(400).json({
+                errorMessage: 'Please provide title and contents for the post.'
+            }).end()
+        } else {
+            res.status(200).json(updatePost)
+        }
+    } catch (error) {
+        res.status(500).json({
+            error: 'The post information could not be modified.'
         })
     }
 })
