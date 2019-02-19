@@ -4,10 +4,6 @@ const postRouter = require('./data/post-router');
 
 const server = express();
 
-server.get('/', (req, res) => {
-    res.send('Server Running');
-});
-
 server.use(express.json());
 server.use(postRouter);
 
@@ -15,8 +11,8 @@ server.use(postRouter);
 
 
 // PORT LISTENER
-server.listen(5555, () => {
-    console.log('Server Running on http://localhost:5555')
+server.listen(6000, () => {
+    console.log('Server Running on http://localhost:6000')
 });
 
 module.exports = server;

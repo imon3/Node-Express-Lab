@@ -1,6 +1,6 @@
 const server = require('./server');
 
 // PORT LISTENER
-server.listen(5555, () => {
-    console.log('Server Running on http://localhost:5555')
+server.listen(6000, () => {
+    console.log('Server Running on http://localhost:6000')
 });
