@@ -41,7 +41,7 @@ router.get('/api/posts/:id', async (req, res) => {
 // CREATE CRUD REQUEST
 router.post('/api/posts', async (req, res) => {
     const post = await Dbase.insert(req.body);
-    console.log(post)
+
     try {
         if (!post.title || !post.contents) {
             res.status(400).json({
@@ -53,6 +53,27 @@ router.post('/api/posts', async (req, res) => {
     } catch (error) {
         res.status(500).json({
             error: 'There was an error while saving the post to the database.'
+        })
+    }
+})
+
+// DELETE CRUD REQUEST
+router.delete('/api/posts/:id', async (req, res) => {
+
+    try {
+        const post = await Dbase.remove(req.params.id);
+        if (!post) {
+            res.status(404).json({
+                message: 'The post with the specified ID does not exist.'
+            })
+        } else {
+            res.status(200).json({
+                message: 'The post was deleted'
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            error: 'The post could not be removed.'
         })
     }
 })
