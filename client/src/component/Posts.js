@@ -14,7 +14,7 @@ class Posts extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8000/api/posts')
+        axios.get('http://localhost:4000/api/posts/all')
             .then(res => {
                 this.setState({
                     posts: res.data
